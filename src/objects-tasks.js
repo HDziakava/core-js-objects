@@ -17,8 +17,10 @@
  *    shallowCopy({a: 2, b: { a: [1, 2, 3]}}) => {a: 2, b: { a: [1, 2, 3]}}
  *    shallowCopy({}) => {}
  */
-function shallowCopy(/* obj */) {
-  throw new Error('Not implemented');
+function shallowCopy(obj) {
+  const answer = {};
+  Object.assign(answer, obj);
+  return answer;
 }
 
 /**
@@ -49,8 +51,11 @@ function mergeObjects(/* objects */) {
  *    removeProperties({name: 'John', age: 30, city: 'New York'}, 'age') => {name: 'John', city: 'New York'}
  *
  */
-function removeProperties(/* obj, keys */) {
-  throw new Error('Not implemented');
+function removeProperties(obj, keys) {
+  const answer = obj;
+  keys.forEach((key) => delete answer[key]);
+
+  return answer;
 }
 
 /**
@@ -65,8 +70,16 @@ function removeProperties(/* obj, keys */) {
  *    compareObjects({a: 1, b: 2}, {a: 1, b: 2}) => true
  *    compareObjects({a: 1, b: 2}, {a: 1, b: 3}) => false
  */
-function compareObjects(/* obj1, obj2 */) {
-  throw new Error('Not implemented');
+function compareObjects(obj1, obj2) {
+  let isEqual = true;
+  const values1 = Object.values(obj1);
+  const values2 = Object.values(obj2);
+
+  values1.forEach((val1, index) => {
+    if (val1 !== values2[index]) isEqual = false;
+  });
+
+  return isEqual;
 }
 
 /**
@@ -80,8 +93,8 @@ function compareObjects(/* obj1, obj2 */) {
  *    isEmptyObject({}) => true
  *    isEmptyObject({a: 1}) => false
  */
-function isEmptyObject(/* obj */) {
-  throw new Error('Not implemented');
+function isEmptyObject(obj) {
+  return Object.keys(obj).length === 0;
 }
 
 /**
@@ -100,8 +113,8 @@ function isEmptyObject(/* obj */) {
  *    immutableObj.newProp = 'new';
  *    console.log(immutableObj) => {a: 1, b: 2}
  */
-function makeImmutable(/* obj */) {
-  throw new Error('Not implemented');
+function makeImmutable(obj) {
+  return Object.freeze(obj);
 }
 
 /**
@@ -114,8 +127,21 @@ function makeImmutable(/* obj */) {
  *    makeWord({ a: [0, 1], b: [2, 3], c: [4, 5] }) => 'aabbcc'
  *    makeWord({ H:[0], e: [1], l: [2, 3, 8], o: [4, 6], W:[5], r:[7], d:[9]}) => 'HelloWorld'
  */
-function makeWord(/* lettersObject */) {
-  throw new Error('Not implemented');
+function makeWord(lettersObject) {
+  const answer = [];
+
+  const letters = Object.keys(lettersObject);
+  const indexes = Object.values(lettersObject);
+
+  indexes.forEach((array, index) => {
+    const { length } = array;
+
+    for (let i = 0; i < length; i += 1) {
+      answer[array[i]] = letters[index];
+    }
+  });
+
+  return answer.join('');
 }
 
 /**
@@ -132,8 +158,23 @@ function makeWord(/* lettersObject */) {
  *    sellTickets([25, 25, 50]) => true
  *    sellTickets([25, 100]) => false (The seller does not have enough money to give change.)
  */
-function sellTickets(/* queue */) {
-  throw new Error('Not implemented');
+function sellTickets(queue) {
+  let change = 0;
+  let answer = true;
+
+  queue.forEach((money) => {
+    if (money === 25) {
+      change += 25;
+    } else if (money === 50) {
+      change -= 25;
+    } else {
+      change -= 75;
+    }
+
+    if (change < 0) answer = false;
+  });
+
+  return answer;
 }
 
 /**
@@ -149,8 +190,20 @@ function sellTickets(/* queue */) {
  *    console.log(r.height);      // => 20
  *    console.log(r.getArea());   // => 200
  */
-function Rectangle(/* width, height */) {
-  throw new Error('Not implemented');
+function Rectangle(width, height) {
+  class RectangleObj {
+    constructor(w, h) {
+      this.width = w;
+      this.height = h;
+
+      this.getArea = () => {
+        return w * h;
+      };
+    }
+  }
+
+  const r = new RectangleObj(width, height);
+  return r;
 }
 
 /**
@@ -163,8 +216,8 @@ function Rectangle(/* width, height */) {
  *    [1,2,3]   =>  '[1,2,3]'
  *    { width: 10, height : 20 } => '{"height":10,"width":20}'
  */
-function getJSON(/* obj */) {
-  throw new Error('Not implemented');
+function getJSON(obj) {
+  return JSON.stringify(obj);
 }
 
 /**
